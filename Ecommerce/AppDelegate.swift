@@ -19,8 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // enable pasteboard check
         Branch.getInstance().enableLogging()
-        // This version of initSession includes the source UIScene in the callback
-        BranchScene.shared().initSession(launchOptions: launchOptions, registerDeepLinkHandler: { (params, error, scene) in})
         
         // listener for Branch Deep Link data
         Branch.getInstance().initSession(launchOptions: launchOptions) { (params, error) in
@@ -37,15 +35,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // switch case to route to views
             if let navigationVC = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            switch options {
-            case "https://openai.com/blog/chatgpt/":
-                let launchVC = navigationVC.viewControllers.last as? ViewController
-                launchVC?.gotoItemOneDetailVC()
-            case "https://google.com/":
-                let launchVC = navigationVC.viewControllers.last as? ViewController
-                launchVC?.gotoItemSecondDetailVC()
-            default: break
-            }
+                
+                let deeplinkParams = options.replacingOccurrences(of: "https://nike.com/", with: "").components(separatedBy: "/")
+                
+                if deeplinkParams.first == "itemdetail" {
+                    switch deeplinkParams.last {
+                    case "1":
+                        let launchVC = navigationVC.viewControllers.last as? ViewController
+                            launchVC?.gotoItemOneDetailVC()
+                    case "2":
+                        let launchVC = navigationVC.viewControllers.last as? ViewController
+                            launchVC?.push(Items2ViewController())
+                    case "3":
+                        let launchVC = navigationVC.viewControllers.last as? ViewController
+                            launchVC?.push(Items3ViewController())
+                    case "4":
+                        let launchVC = navigationVC.viewControllers.last as? ViewController
+                            launchVC?.push(ItemDetails4ViewController())
+                    default: break
+                    }
+                }
+                
+//            switch options {
+//            case "https://nike.com/":
+//                let launchVC = navigationVC.viewControllers.last as? ViewController
+//                launchVC?.gotoItemOneDetailVC()
+//            case "https://google.com/":
+//                let launchVC = navigationVC.viewControllers.last as? ViewController
+//                launchVC?.gotoItemSecondDetailVC()
+//            default: break
+//            }
         }
            }
         
@@ -70,6 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+   
 }
 
 

@@ -334,6 +334,12 @@ open class ViewController: DSViewController {
              orderSection)
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+       
+   // self.present(vc: Home4ViewController(), presentationStyle: .fullScreen)
+        self.push(Home4ViewController())
+    }
+    
     func gotoItemOneDetailVC() {
         self.push(Items1ViewController())
     }

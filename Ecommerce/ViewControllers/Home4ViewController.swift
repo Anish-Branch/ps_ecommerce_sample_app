@@ -56,6 +56,7 @@ extension Home4ViewController {
         action.rightRoundImage(url: URL.profileOnYellowBg, size: CGSize(width: 55, height: 55))
         
         action.style.displayStyle = .default
+        
         return action.list()
     }
 }
@@ -199,9 +200,16 @@ extension Home4ViewController {
         composer.add(type: .headline, text: title)
         composer.add(type: .subheadline, text: description)
         composer.add(price: DSPrice.random())
+       
         
         // Transform composer to action view model
         var action = composer.actionViewModel()
+        action.didTap {  [unowned self] (textcomposer)  in
+            print("selected  text \(textcomposer)")
+
+            self.push(ItemDetails2ViewController())
+        }
+        
         
         let image = UIImage(named: imageName,
                             in: Bundle(for: self.classForCoder),
@@ -230,6 +238,7 @@ extension Home4ViewController {
         header.style.displayStyle = .default
         
         header.rightButton(title: "View all", sfSymbolName: "chevron.right", style: .medium) { [unowned self] in
+            
             self.dismiss()
         }
         

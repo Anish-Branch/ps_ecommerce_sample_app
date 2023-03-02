@@ -7,6 +7,7 @@
 
 import DSKit
 import DSKitFakery
+import Branch
 
 open class ItemDetails2ViewController: DSViewController {
     
@@ -65,7 +66,34 @@ open class ItemDetails2ViewController: DSViewController {
         
         // Add to cart button
         let addToCart = DSButtonVM(title: "Add to cart", icon: UIImage(systemName: "cart.fill")) { [unowned self] tap in
+           // write log event here
+            // Create a BranchUniversalObject with your content data:
+            let branchUniversalObject = BranchUniversalObject.init()
+            
+            branchUniversalObject.contentMetadata.contentSchema     = .commerceProduct
+            branchUniversalObject.contentMetadata.quantity          = 1
+            branchUniversalObject.contentMetadata.price             = 23.20
+            branchUniversalObject.contentMetadata.currency          = .USD
+            branchUniversalObject.contentMetadata.sku               = "1994320302"
+            branchUniversalObject.contentMetadata.productName       = "my_product_name1"
+            branchUniversalObject.contentMetadata.productBrand      = "my_prod_Brand1"
+            branchUniversalObject.contentMetadata.productCategory   = .apparel
+            branchUniversalObject.contentMetadata.productVariant    = "XL"
+
+            // Create a BranchEvent:
+            let event = BranchEvent.standardEvent(.addToCart)
+
+            // Add the BranchUniversalObject with the content (do not add an empty branchUniversalObject):
+            event.contentItems     = [ branchUniversalObject ]
+
+            // Add relevant event data:
+            event.alias            = "my custom alias"
+            event.currency         = .USD
+            event.revenue          = 1.5
+            event.logEvent() // Log the event.
+            
             self.dismiss()
+            
         }
         
         // Show bottom content
